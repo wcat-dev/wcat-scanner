@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "outDir": "dist",
+    "target": "es6",
+    "module": "commonjs",
+    "lib": ["es6"],
+    "sourceMap": true,
+    "allowJs": true,
+    "moduleResolution": "node",
+    "noEmit": false,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "noUnusedLocals": true,
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "removeComments": true,
+    "declaration": true,
+    "baseUrl": ".",
+    "plugins": [
+      {
+        "transform": "typescript-json/lib/transform"
+      }
+    ]
+  },
+  "include": ["src", "*.proto"],
+  "exclude": ["node_modules"]
+}

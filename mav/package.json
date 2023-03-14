@@ -1,0 +1,55 @@
+{
+  "name": "@a11ywatch/mav",
+  "version": "0.7.13",
+  "description": "a gRPC image recognition service",
+  "main": "./server.js",
+  "scripts": {
+    "dev": "ts-node-dev --transpile-only -r tsconfig-paths/register src/server.ts",
+    "test": "jest",
+    "build": "tsc && tsc-alias",
+    "start": "node dist/server.js",
+    "fix": "prettier --write '**/*.{js,jsx,ts,tsx}'",
+    "pub": "tsc && tsc-alias && cp package.json dist && cp yarn.lock dist && cp README.md dist && cp LICENSE dist && cd dist && npm publish"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/a11ywatch/mav.git"
+  },
+  "dependencies": {
+    "@a11ywatch/protos": "^0.4.3",
+    "@a11ywatch/website-source-builder": "^0.1.8",
+    "@azure/cognitiveservices-computervision": "^8.2.0",
+    "@grpc/grpc-js": "1.8.8",
+    "@grpc/proto-loader": "0.7.4",
+    "@tensorflow-models/coco-ssd": "2.2.2",
+    "@tensorflow-models/mobilenet": "2.1.0",
+    "@tensorflow/tfjs-backend-wasm": "4.1.0",
+    "@tensorflow/tfjs-converter": "4.1.0",
+    "@tensorflow/tfjs-core": "4.1.0",
+    "base64-to-tensor": "^1.2.8",
+    "jpeg-js": "^0.4.4",
+    "tensornet": "1.0.14"
+  },
+  "devDependencies": {
+    "@swc/core": "^1.2.197",
+    "@swc/jest": "^0.2.21",
+    "@types/jest": "^28.1.1",
+    "jest": "^26.4.2",
+    "prettier": "^2.0.5",
+    "ts-node-dev": "1.1.6",
+    "tsc-alias": "1.6.3",
+    "tsconfig-paths": "^3.9.0",
+    "typescript": "4.7.2"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "^@app/(.*)$": "<rootDir>/src/$1"
+    },
+    "transform": {
+      "^.+\\.(t|j)sx?$": "@swc/jest"
+    },
+    "verbose": true,
+    "coverageDirectory": "./coverage/",
+    "collectCoverage": true
+  }
+}

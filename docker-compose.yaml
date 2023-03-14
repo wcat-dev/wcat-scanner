@@ -1,0 +1,146 @@
+version: "3.9"
+services:
+  api:
+    container_name: api
+    build:
+      context: ./api
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./api/src:/usr/src/app/src
+    ports:
+      - 3280:3280
+      - 50050:50050
+      - 50051:50051
+    depends_on:
+      - mongodb
+    environment:
+      - DB_URL=${DB_URL:-mongodb://mongodb:27017}
+      - DB_NAME=${DB_NAME:-wcat-scanner}
+      - APOLLO_GRAPH_VARIANT=${APOLLO_GRAPH_VARIANT:-current}
+      - APOLLO_SCHEMA_REPORTING=${APOLLO_SCHEMA_REPORTING:-false}
+      - CLIENT_URL=${CLIENT_URL:-http://localhost:3000}
+      - GRAPHQL_PORT=${GRAPHQL_PORT:-3280}
+      - EMAIL_SERVICE_URL=${EMAIL_SERVICE_URL}
+      - EMAIL_CLIENT_ID=${EMAIL_CLIENT_ID}
+      - EMAIL_CLIENT_KEY=${EMAIL_CLIENT_KEY}
+      - EMAIL_SERVICE_PASSWORD=${EMAIL_SERVICE_PASSWORD}
+      - STRIPE_KEY=${STRIPE_KEY}
+      - SCRIPTS_CDN_URL=${SCRIPTS_CDN_URL:-http://localhost:8090/api}
+      - ROOT_URL=${ROOT_URL:-http://localhost:3280}
+      - PRIVATE_KEY=${PRIVATE_KEY}
+      - PUBLIC_KEY=${PUBLIC_KEY}
+      - ADMIN_ORIGIN=${ADMIN_ORIGIN}
+      - SUPER_MODE=${SUPER_MODE:-true}
+      - REDIS_CLIENT=${REDIS_CLIENT:-redis://redis:6379}
+      - GITHUB_CLIENT_ID=${GITHUB_CLIENT_ID}
+      - GITHUB_CLIENT_SECRET=${GITHUB_CLIENT_SECRET}
+      - REDIS_HOST=redis
+      - DOCKER_CONTAINER=true
+      - STRIPE_L1_PLAN=${STRIPE_L1_PLAN}
+      - STRIPE_L1_PLAN_YEARLY=${STRIPE_L1_PLAN_YEARLY}
+      - STRIPE_L2_PLAN=${STRIPE_L2_PLAN}
+      - STRIPE_L2_PLAN_YEARLY=${STRIPE_L2_PLAN_YEARLY}
+      - STRIPE_L3_PLAN=${STRIPE_L3_PLAN}
+      - STRIPE_L3_PLAN_YEARLY=${STRIPE_L3_PLAN_YEARLY}
+      - STRIPE_L4_PLAN=${STRIPE_L4_PLAN}
+      - STRIPE_L4_PLAN_YEARLY=${STRIPE_L4_PLAN_YEARLY}
+      - STRIPE_L5_PLAN=${STRIPE_L5_PLAN}
+      - STRIPE_L5_PLAN_YEARLY=${STRIPE_L5_PLAN_YEARLY}
+      - STRIPE_H1_PLAN=${STRIPE_H1_PLAN}
+      - STRIPE_H1_PLAN_YEARLY=${STRIPE_H1_PLAN_YEARLY}
+      - STRIPE_H2_PLAN=${STRIPE_H2_PLAN}
+      - STRIPE_H2_PLAN_YEARLY=${STRIPE_H2_PLAN_YEARLY}
+      - STRIPE_H3_PLAN=${STRIPE_H3_PLAN}
+      - STRIPE_H3_PLAN_YEARLY=${STRIPE_H3_PLAN_YEARLY}
+      - STRIPE_H4_PLAN=${STRIPE_H4_PLAN}
+      - STRIPE_H4_PLAN_YEARLY=${STRIPE_H4_PLAN_YEARLY}
+      - STRIPE_H5_PLAN=${STRIPE_H5_PLAN}
+      - STRIPE_H5_PLAN_YEARLY=${STRIPE_H5_PLAN_YEARLY}
+      - STRIPE_WH_SECRET=${STRIPE_WH_SECRETS}
+      - STRIPE_CLIENT_KEY=${STRIPE_CLIENT_KEY}
+      - SCRIPTS_ENABLED=${SCRIPTS_ENABLED}
+    networks:
+      - back-net
+
+  pagemind:
+    container_name: pagemind
+    build:
+      context: ./pagemind
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./pagemind/src:/usr/src/app/src
+    ports:
+      - 50052
+    environment:
+      - PAGESPEED_API_KEY=${PAGESPEED_API_KEY}
+      - GRPC_HOST_MAV=mav:50053
+      - GRPC_HOST_CORE=api:50051
+    networks:
+      - back-net
+
+  mav:
+    container_name: mav
+    build:
+      context: ./mav
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./mav/src:/usr/src/app/src
+    ports:
+      - 50053
+    environment:
+      - COMPUTER_VISION_ENDPOINT=${COMPUTER_VISION_ENDPOINT}
+      - COMPUTER_VISION_SUBSCRIPTION_KEY=${COMPUTER_VISION_SUBSCRIPTION_KEY}
+    networks:
+      - back-net
+
+  crawler:
+    container_name: crawler
+    build:
+      context: ./crawler
+      dockerfile: docker/Dockerfile.dev
+    volumes:
+      - ./crawler/src:/usr/src/app/src
+    ports:
+      - 50055:50055
+    networks:
+      - back-net
+    environment:
+      - RUST_LOG=info
+
+  mongodb:
+    container_name: mongodb
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongodb:/data/db
+    environment:
+      - MONGO_INITDB_DATABASE=${DB_NAME:-wcat_scanner}
+    networks:
+      - back-net
+
+  redis:
+    container_name: redis
+    image: redis:7.0-rc2-alpine
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    networks:
+      - back-net
+    ports:
+      - 6379
+
+  chrome:
+    container_name: chrome
+    build:
+      context: ./chrome
+      dockerfile: Dockerfile
+    volumes:
+      - ./chrome/src:/usr/src/app/src
+    ports:
+      - "9222:9222"
+      - "6000:6000"
+    networks:
+      - back-net
+  
+networks:
+  back-net:

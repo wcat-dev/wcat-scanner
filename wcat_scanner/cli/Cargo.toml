@@ -1,0 +1,46 @@
+[package]
+name = "a11ywatch_cli"
+version = "0.8.49"
+authors = ["j-mendez <jeff@a11ywatch.com>"]
+description = "A11yWatch web accessibility CLI."
+repository = "https://github.com/a11ywatch/a11ywatch"
+readme = "README.md"
+keywords = ["a11ywatch", "accessibility", "web", "website_improvement"]
+categories = ["accessibility", "command-line-utilities", "development-tools::build-utils"]
+license = "MIT"
+documentation = "https://docs.rs/a11ywatch_cli"
+include = ["src/*", "build.rs", "proto/*", "LICENSE", "README.md"]
+edition = "2018"
+
+[dependencies]
+clap = { version = "3.2.8", features = ["derive"] }
+serde = { version = "1.0.147", features = ["derive"] }
+serde_json =  { version = "1.0.85" }
+dirs = "4.0"
+htr = "0.5.26"
+tonic = { version = "0.7.2" }
+lazy_static = { version = "1.4.0" }
+prost = { version = "0.10.0" }
+prost-types = { version = "0.10.0" }
+tokio = { version = "^1.24.1", features = [ "rt", "rt-multi-thread", "net", "macros" ] }
+env_logger = "0.9.0"
+log = "0.4.17"
+reqwest = { version = "^0.11.11", features = ["json", "brotli", "blocking"] }
+os_info = { version = "3", default-features = false }
+openssl = { version = "0.10.45", optional = true }
+
+[build-dependencies]
+tonic-build = { version = "0.7.2" }
+
+[target.'cfg(target_os = "freebsd")'.dependencies.openssl]
+version = "0.10.45"
+
+[features]
+default = ["all"]
+all = ["dist-clients"]
+dist-clients = []
+dist-vendor = ["openssl"]
+
+[[bin]]
+name = "wcat-scanner"
+path = "src/main.rs"

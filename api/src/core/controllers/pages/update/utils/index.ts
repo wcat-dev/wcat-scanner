@@ -1,0 +1,1 @@
+export { generateWebsiteScore } from "./domain";

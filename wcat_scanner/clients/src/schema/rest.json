@@ -1,0 +1,49 @@
+{
+  "version": "0.1.1",
+  "languages": [
+    {
+      "name": "javascript"
+    },
+    {
+      "name": "typescript"
+    },
+    {
+      "name": "rust"
+    },
+    {
+      "name": "go"
+    },
+    { "name": "objc" },
+    {
+      "name": "php"
+    },
+    {
+      "name": "elixir"
+    },
+    {
+      "name": "c"
+    },
+    { "name": "cpp-restsdk" },
+    {
+      "name": "lua"
+    },
+    {
+      "name": "ruby"
+    },
+    {
+      "name": "python"
+    },
+    {
+      "name": "swift5"
+    },
+    {
+      "name": "csharp"
+    },
+    {
+      "name": "csharp-netcore"
+    },
+    {
+      "name": "java"
+    }
+  ]
+}

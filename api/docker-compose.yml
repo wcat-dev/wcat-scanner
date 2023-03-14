@@ -1,0 +1,58 @@
+version: "3.0"
+services:
+  api:
+    container_name: api
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    networks:
+      - back-net
+    ports:
+      - "3280:3280"
+    environment:
+      - DB_URL=${DB_URL:-mongodb://mongodb:27017}
+      - DB_NAME=${DB_NAME:-a11ywatch}
+      - APOLLO_KEY=${APOLLO_KEY}
+      - APOLLO_GRAPH_VARIANT=${APOLLO_GRAPH_VARIANT:-current}
+      - APOLLO_SCHEMA_REPORTING=${APOLLO_SCHEMA_REPORTING:-true}
+      - CLIENT_URL=${CLIENT_URL:-http://localhost:3000}
+      - GRAPHQL_PORT=${GRAPHQL_PORT:-3280}
+      - EMAIL_SERVICE_URL=${EMAIL_SERVICE_URL}
+      - EMAIL_CLIENT_ID=${EMAIL_CLIENT_ID}
+      - EMAIL_CLIENT_KEY=${EMAIL_CLIENT_KEY}
+      - STRIPE_KEY=${STRIPE_KEY}
+      - ROOT_URL=${ROOT_URL:-http://localhost:3280}
+      - PRIVATE_KEY=${PRIVATE_KEY}
+      - PUBLIC_KEY=${PUBLIC_KEY}
+      - ADMIN_ORIGIN=${ADMIN_ORIGIN}
+      - REDIS_CLIENT=${REDIS_CLIENT:-redis://redis:6379}
+      - REDIS_HOST=redis
+      - STRIPE_L1_PLAN=${STRIPE_L1_PLAN}
+      - STRIPE_L1_PLAN_YEARLY=${STRIPE_L1_PLAN_YEARLY}
+      - STRIPE_L2_PLAN=${STRIPE_L2_PLAN}
+      - STRIPE_L2_PLAN_YEARLY=${STRIPE_L2_PLAN_YEARLY}
+      - STRIPE_L3_PLAN=${STRIPE_L3_PLAN}
+      - STRIPE_L3_PLAN_YEARLY=${STRIPE_L3_PLAN_YEARLY}
+      - STRIPE_L4_PLAN=${STRIPE_L4_PLAN}
+      - STRIPE_L4_PLAN_YEARLY=${STRIPE_L4_PLAN_YEARLY}
+      - STRIPE_L5_PLAN=${STRIPE_L5_PLAN}
+      - STRIPE_L5_PLAN_YEARLY=${STRIPE_L5_PLAN_YEARLY}
+      - STRIPE_H1_PLAN=${STRIPE_H1_PLAN}
+      - STRIPE_H1_PLAN_YEARLY=${STRIPE_H1_PLAN_YEARLY}
+      - STRIPE_H2_PLAN=${STRIPE_H2_PLAN}
+      - STRIPE_H2_PLAN_YEARLY=${STRIPE_H2_PLAN_YEARLY}
+      - STRIPE_H3_PLAN=${STRIPE_H3_PLAN}
+      - STRIPE_H3_PLAN_YEARLY=${STRIPE_H3_PLAN_YEARLY}
+      - STRIPE_H4_PLAN=${STRIPE_H4_PLAN}
+      - STRIPE_H4_PLAN_YEARLY=${STRIPE_H4_PLAN_YEARLY}
+      - STRIPE_H5_PLAN=${STRIPE_H5_PLAN}
+      - STRIPE_H5_PLAN_YEARLY=${STRIPE_H5_PLAN_YEARLY}
+  redis:
+    container_name: redis
+    image: bitnami/redis:6.0
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    networks:
+      - back-net
+networks:
+  back-net:

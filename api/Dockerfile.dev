@@ -1,0 +1,15 @@
+FROM node:19.6-alpine
+
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+
+RUN apk upgrade --update-cache --available && \
+	apk add openssl && \
+	rm -rf /var/cache/apk/*
+
+RUN npm ci
+
+COPY . .
+
+CMD ["node_modules/ts-node-dev/lib/bin.js", "--no-experimental-fetch", "--transpile-only", "src/server.ts"]

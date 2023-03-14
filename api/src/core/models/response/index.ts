@@ -1,0 +1,1 @@
+export { responseModel } from "./response";

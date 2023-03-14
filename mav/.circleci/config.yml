@@ -1,0 +1,27 @@
+version: 2.1
+orbs:
+  codecov: codecov/codecov@1.0.2
+jobs:
+  mav:
+    docker:
+      - image: cimg/node:19.0.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - node-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - node-v1-{{ .Branch }}-
+            - node-v1-
+      - run:
+          command: yarn install --frozen-lockfile && npm test
+      - save_cache:
+          paths:
+            - ~/usr/local/lib/node_modules
+          key: node-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
+      - codecov/upload:
+          file: "./coverage/clover.xml"
+
+workflows:
+  build_and_test:
+    jobs:
+      - mav

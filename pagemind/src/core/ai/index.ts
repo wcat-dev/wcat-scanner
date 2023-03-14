@@ -1,0 +1,1 @@
+export { detectImageModel } from "./detectImage";

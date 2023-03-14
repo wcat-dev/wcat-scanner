@@ -1,0 +1,1 @@
+export { getReport } from "./read";
