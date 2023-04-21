@@ -1,6 +1,6 @@
 # WCAT-Scanner
 
-WCAT-Scanner CLI tool based on [A11yWatch](https://github.com/a11ywatch/)
+WCAT-Scanner CLI tool
 
 ## Setup Instructions
 
